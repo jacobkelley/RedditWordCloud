@@ -93,10 +93,9 @@ def main():
     commonwords = "the","be","to","of","and","a","in","that","have","I","it","for","not","on","with","he","as","you","do","at","this","but","his","by","from","they","we","say","her","she","or","an","will","my","one","all","would","there","their","what","so","up","out","if","about","who","get","which","go","me","when","make","can","like","time","no","just","him","know","take","people","into","year","your","good","some","could","them","see","other","than","then","now","look","only","come","its","over","think","also","back","after","use","two","how","our","work","first","well","way","even","new","want","because","any","these","give","day","most","us"
 
     ### --> Setting bot and subreddit info
-    #reddit = praw.Reddit('fuckthepatriotsBot')
     reddit = praw.Reddit(user_agent='WordCloudBot v0.1',
-                        client_id='NI46ibtelzSpoA', client_secret='4T2ixTXi2uRnk3Dysll_wn5ipJw',
-                        username='_Exaybachay_', password='2lhd!vOsOGYO3N&k?Hz:1;\'n.qy3f*lp')
+                        client_id='blah', client_secret='abc123',
+                        username='need_to_update_this', password='aaaaaaaa')
 
     words = []
 
