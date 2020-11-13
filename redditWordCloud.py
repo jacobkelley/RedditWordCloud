@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 
 ### --------------------------------->>> Functions <<<---------------------------------   ###
 
+
 def checkArgs():
     def printAndExit():
         print("Usage: test.py -s <subreddit>  -t <posttypes> -n <numberofposts>")
@@ -89,6 +90,7 @@ def checkArgs():
 
 def main():
     ### --------------------------------->>> Gather data <<<---------------------------------   ###
+    commonwords = "the","be","to","of","and","a","in","that","have","I","it","for","not","on","with","he","as","you","do","at","this","but","his","by","from","they","we","say","her","she","or","an","will","my","one","all","would","there","their","what","so","up","out","if","about","who","get","which","go","me","when","make","can","like","time","no","just","him","know","take","people","into","year","your","good","some","could","them","see","other","than","then","now","look","only","come","its","over","think","also","back","after","use","two","how","our","work","first","well","way","even","new","want","because","any","these","give","day","most","us"
 
     ### --> Setting bot and subreddit info
     #reddit = praw.Reddit('fuckthepatriotsBot')
@@ -98,45 +100,45 @@ def main():
 
     words = []
 
-    ### --> Get submissions from WSB hot to parse for stock names
+    ### --> Get submissions from subreddit hot to parse for wordcloud
     if sorttype == "Hot" or sorttype == "hot":
         for submission in reddit.subreddit(subreddit).hot(limit=sortlimit):
             submission.comments.replace_more(limit=0)
             for comment in submission.comments.list():
-                splitwords = []
                 commentwords = re.findall(r'\s|,|[^,\s]+', comment.body) 
                 for word in commentwords:
                     words.append(word)
 
-    ### --> Get submissions from WSB hot to parse for stock names
+    ### --> Get submissions from subreddit new to parse for wordcloud
     elif sorttype == "New" or sorttype == "new":
         for submission in reddit.subreddit(subreddit).new(limit=sortlimit):
             submission.comments.replace_more(limit=0)
             for comment in submission.comments.list():
-                splitwords = []
-                commentwords = re.findall((r'\s|,|[^,\s]+', comment.body)) 
+                commentwords = re.findall(r'\s|,|[^,\s]+', comment.body)
                 for word in commentwords:
                     words.append(word)
 
-    ### --> Get submissions from WSB hot to parse for stock names
-    if sorttype == "Top" or sorttype == "top":
+    ### --> Get submissions from subreddit top to parse for wordcloud
+    elif sorttype == "Top" or sorttype == "top":
         for submission in reddit.subreddit(subreddit).top(limit=sortlimit):
             submission.comments.replace_more(limit=0)
             for comment in submission.comments.list():
-                splitwords = []
-                commentwords = re.findall((r'\s|,|[^,\s]+', comment.body)) 
+                commentwords = re.findall(r'\s|,|[^,\s]+', comment.body) 
                 for word in commentwords:
                     words.append(word)
 
-    ### --> Get submissions from WSB hot to parse for stock names
-    if sorttype == "Rising" or sorttype == "rising":
+    ### --> Get submissions from subreddit rising to parse for wordcloud
+    elif sorttype == "Rising" or sorttype == "rising":
         for submission in reddit.subreddit(subreddit).rising(limit=sortlimit):
             submission.comments.replace_more(limit=0)
             for comment in submission.comments.list():
-                splitwords = []
-                commentwords = re.findall((r'\s|,|[^,\s]+', comment.body)) 
+                commentwords = re.findall(r'\s|,|[^,\s]+', comment.body)
                 for word in commentwords:
                     words.append(word)
+
+    else:
+        print("Something went wrong... exiting")
+        sys.exit()
 
     ### --------------------------------->>> Calculate frequency <<<---------------------------------   ###
 
@@ -148,7 +150,12 @@ def main():
     for word in words:
         if word != " ":
             w = word.strip("\"")
-            words2.append(w)
+            w = w.strip("\n")
+            w = w.strip(",")
+
+            if w.lower() not in commonwords:
+                if w not in commonwords:
+                    words2.append(w)
     words = words2
 
     for w in words:
